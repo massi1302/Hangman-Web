@@ -1,0 +1,100 @@
+{{define "home"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <Script src="/assets/js/home.js" defer></Script>
+</head>
+<body>
+    <div class="header">
+        <svg class="home-icon" viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="black"/>
+        </svg>
+        <div class="score">
+            <div>SAVED: 0</div>
+            <div>BEST: 0</div>
+            <svg class="balloon-icon" viewBox="0 0 24 24">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7z" fill="#d35f5f"/>
+            </svg>
+        </div>
+    </div>
+<div class="main-content">
+<div class="logo-container">
+    <svg viewBox="0 0 100 30">
+        
+        <!-- Lettres suspendues -->
+        <g id="letters" fill="#2C3E50" font-family="Belinsky" font-size="14">
+            <!-- H -->
+            <text x="15" y="20" transform="rotate(-1,15,20)">
+                H
+                <animate attributename="y" values="20;20.5;20" dur="2.5s" repeatcount="indefinite"></animate>
+            </text>
+            <!-- A -->
+            <text x="25" y="19.5" transform="rotate(0.5,25,19.5)">
+                A
+                <animate attributename="y" values="19.5;20;19.5" dur="2.7s" repeatcount="indefinite"></animate>
+            </text>
+            <!-- N -->
+            <text x="35" y="20" transform="rotate(-0.5,35,20)">
+                N
+                <animate attributename="y" values="20;20.5;20" dur="2.3s" repeatcount="indefinite"></animate>
+            </text>
+            <!-- G -->
+            <text x="45" y="19.5" transform="rotate(1,45,19.5)">
+                G
+                <animate attributename="y" values="19.5;20;19.5" dur="2.6s" repeatcount="indefinite"></animate>
+            </text>
+            <!-- M -->
+            <text x="55" y="20" transform="rotate(-0.5,55,20)">
+                M
+                <animate attributename="y" values="20;20.5;20" dur="2.4s" repeatcount="indefinite"></animate>
+            </text>
+            <!-- A -->
+            <text x="65" y="19.5" transform="rotate(0.5,65,19.5)">
+                A
+                <animate attributename="y" values="19.5;20;19.5" dur="2.8s" repeatcount="indefinite"></animate>
+            </text>
+            <!-- N -->
+            <text x="75" y="20" transform="rotate(-1,75,20)">
+                N
+                <animate attributename="y" values="20;20.5;20" dur="2.5s" repeatcount="indefinite"></animate>
+            </text>
+        </g>
+        
+        <!-- Ombre portée -->
+        <ellipse cx="40" cy="26" rx="30" ry="0.8" fill="#2C3E50" opacity="0.1"></ellipse>
+    </svg>
+</div>
+    <div class="difficulty-buttons">
+        <div class="button selected">EASY</div>
+        <div class="button">MEDIUM</div>
+        <div class="button">HARD</div>
+    </div>
+
+    <div class="stick-figure-container">
+        <svg class="stick-figure" viewBox="0 0 100 100">
+            <circle cx="50" cy="20" r="10" fill="none" stroke="black" stroke-width="2"/>
+            <line x1="50" y1="30" x2="50" y2="70" stroke="black" stroke-width="2"/>
+            <line x1="50" y1="70" x2="30" y2="90" stroke="black" stroke-width="2"/>
+            <line x1="50" y1="70" x2="70" y2="90" stroke="black" stroke-width="2"/>
+            <line x1="50" y1="40" x2="30" y2="60" stroke="black" stroke-width="2"/>
+            <line x1="50" y1="40" x2="70" y2="60" stroke="black" stroke-width="2"/>
+        </svg>
+    </div>
+
+    <button class="play-button">PLAY</button>
+</div>
+    <div class="footer">
+        <svg class="footer-icon" viewBox="0 0 24 24">
+            <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z" fill="black"/>
+        </svg>
+        <svg class="footer-icon" viewBox="0 0 24 24">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" fill="black"/>
+        </svg>
+    </div>
+
+</div>
+</body>
+</html>
+{{end}}

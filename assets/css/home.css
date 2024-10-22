@@ -1,0 +1,166 @@
+@font-face {
+    font-family: 'Belinsky';
+    src: url('../fonts/belinsky-text/Belinsky\ Text\ Bold.otf');
+    src: url('../fonts/belinsky-text/Belinsky\ Text\ Regular.otf');
+ }
+ 
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+ 
+ body {
+     margin: 0;
+     padding: 15px;
+     min-height: 100vh;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     background: white;
+     font-family: Arial, sans-serif;
+     justify-content: space-between;
+ }
+ 
+ .header {
+     width: 100%;
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+        margin-bottom: 5px;
+ }
+ 
+.logo-container {
+    width: 500px;  
+    height: 140px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ }
+
+.logo-container svg{
+    width: 100%;
+    height: 100%;
+    transform: scale(1.2);  
+    transition: transform 0.3s ease; 
+}
+
+logo-container:hover svg {
+    transform: scale(1.25); 
+}
+
+ .home-icon {
+     width: 30px;
+     height: 30px;
+     cursor: pointer;
+ }
+ 
+ .score {
+     display: flex;
+     align-items: center;
+     gap: 10px;
+     font-size: 18px;
+ }
+ 
+ .balloon-icon {
+     width: 25px;
+     height: 25px;
+ }
+ 
+ h1 {
+     font-family: 'Belinsky Text Bold';
+     font-size: 120px;  /* Augmenté de 48px à 72px */
+     letter-spacing: 15px;  /* Augmenté de 10px à 15px */
+     margin: 0px 0px 30px 0px;  /* Augmenté de 40px à 60px */
+     text-align: center;
+     text-transform: uppercase;  /* Ajouté pour plus d'impact */
+     font-weight: bold;  /* Ajouté pour plus d'emphase */
+     text-shadow: 3px 3px 0px rgba(0,0,0,0.1);  /* Ajouté pour de la profondeur */
+ }
+ 
+ .difficulty-buttons {
+     display: flex;
+     gap: 15px;
+     margin:15px 0;
+ }
+ 
+ .button {
+     padding: 10px 30px;
+     font-size: 20px;
+     border: 2px solid black;
+     background: white;
+     cursor: pointer;
+     text-transform: uppercase;
+     min-width: 120px;
+     text-align: center;
+     transition: all 0.3s ease;
+ }
+ 
+ .button.selected {
+     background: black;
+     color: white;
+ }
+ 
+ .play-button {
+     background: black;
+     color: white;
+     padding: 15px 60px;
+     font-size: 36px;
+     border: none;
+     cursor: pointer;
+     text-transform: uppercase;
+     margin-top: 40px;
+ }
+ 
+.main-content{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 5px 0;
+}
+
+ .footer {
+     position: static;
+     width: 100%;
+     display: flex;
+     gap: 20px;
+        justify-content: flex-start;
+        padding: 10px 0;
+ }
+ 
+ .footer-icon {
+     width: 25px;
+     height: 25px;
+     cursor: pointer;
+ }
+ 
+ 
+
+ .stick-figure-container {
+    margin: 10px 0 ;
+    width: 300px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+}
+
+.stick-figure {
+    width: 100%;
+    height: 100%;
+    transform-origin: center;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
