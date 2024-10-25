@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/assets/css/home.css">
     <Script src="/assets/js/home.js" defer></Script>
+    <title>Hangman</title>
 </head>
 <body>
     <div class="header">
@@ -21,49 +22,48 @@
     </div>
 <div class="main-content">
 <div class="logo-container">
-    <svg viewBox="0 0 100 30">
-        
-        <!-- Lettres suspendues -->
-        <g id="letters" fill="#2C3E50" font-family="Belinsky" font-size="14">
-            <!-- H -->
-            <text x="15" y="20" transform="rotate(-1,15,20)">
+    <svg viewbox="0 0 300 50">
+       
+        <g id="letters" fill="#2C3E50" font-family="Belinsky" font-size="40">
+            
+            <text x="20" y="35" transform="rotate(-1,20,35)">
                 H
-                <animate attributename="y" values="20;20.5;20" dur="2.5s" repeatcount="indefinite"></animate>
+                <animate attributename="y" values="35;35.5;35" dur="2.5s" repeatcount="indefinite"></animate>
             </text>
-            <!-- A -->
-            <text x="25" y="19.5" transform="rotate(0.5,25,19.5)">
+            
+            <text x="60" y="34.5" transform="rotate(0.5,60,34.5)">
                 A
-                <animate attributename="y" values="19.5;20;19.5" dur="2.7s" repeatcount="indefinite"></animate>
+                <animate attributename="y" values="34.5;35;34.5" dur="2.7s" repeatcount="indefinite"></animate>
             </text>
-            <!-- N -->
-            <text x="35" y="20" transform="rotate(-0.5,35,20)">
+            
+            <text x="100" y="35" transform="rotate(-0.5,100,35)">
                 N
-                <animate attributename="y" values="20;20.5;20" dur="2.3s" repeatcount="indefinite"></animate>
+                <animate attributename="y" values="35;35.5;35" dur="2.3s" repeatcount="indefinite"></animate>
             </text>
-            <!-- G -->
-            <text x="45" y="19.5" transform="rotate(1,45,19.5)">
+            
+            <text x="140" y="34.5" transform="rotate(1,140,34.5)">
                 G
-                <animate attributename="y" values="19.5;20;19.5" dur="2.6s" repeatcount="indefinite"></animate>
+                <animate attributename="y" values="34.5;35;34.5" dur="2.6s" repeatcount="indefinite"></animate>
             </text>
-            <!-- M -->
-            <text x="55" y="20" transform="rotate(-0.5,55,20)">
+            
+            <text x="180" y="35" transform="rotate(-0.5,180,35)">
                 M
-                <animate attributename="y" values="20;20.5;20" dur="2.4s" repeatcount="indefinite"></animate>
+                <animate attributename="y" values="35;35.5;35" dur="2.4s" repeatcount="indefinite"></animate>
             </text>
-            <!-- A -->
-            <text x="65" y="19.5" transform="rotate(0.5,65,19.5)">
+            
+            <text x="220" y="34.5" transform="rotate(0.5,220,34.5)">
                 A
-                <animate attributename="y" values="19.5;20;19.5" dur="2.8s" repeatcount="indefinite"></animate>
+                <animate attributename="y" values="34.5;35;34.5" dur="2.8s" repeatcount="indefinite"></animate>
             </text>
-            <!-- N -->
-            <text x="75" y="20" transform="rotate(-1,75,20)">
+            
+            <text x="260" y="35" transform="rotate(-1,260,35)">
                 N
-                <animate attributename="y" values="20;20.5;20" dur="2.5s" repeatcount="indefinite"></animate>
+                <animate attributename="y" values="35;35.5;35" dur="2.5s" repeatcount="indefinite"></animate>
             </text>
         </g>
         
-        <!-- Ombre portée -->
-        <ellipse cx="40" cy="26" rx="30" ry="0.8" fill="#2C3E50" opacity="0.1"></ellipse>
+        
+        <ellipse cx="140" cy="45" rx="120" ry="1" fill="#2C3E50" opacity="0.1"></ellipse>
     </svg>
 </div>
     <div class="difficulty-buttons">

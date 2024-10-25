@@ -1,0 +1,78 @@
+{{define "game"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+  <link rel="stylesheet" href="/assets/css/game.css">
+    <script src="/assets/js/game.js" defer></script>
+        <title>Hangman</title>
+</head>
+<body>
+    <div class="header">
+        <svg class="home-icon" viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="black"/>
+        </svg>
+        <div class="title">Science</div>
+        <div class="score">
+            <span>🎈</span>
+            <span>SAVED: 0</span>
+            <span>BEST: 0</span>
+        </div>
+    </div>
+
+    <div class="hidden-word">
+        <span></span><span></span><span></span><span></span><span></span>
+        &nbsp;&nbsp;&nbsp;
+        <span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="game-container">
+        <div class="left-section">
+            <div class="alphabet-container">
+                <div class="letter">A</div>
+                <div class="letter">B</div>
+                <div class="letter">C</div>
+                <div class="letter">D</div>
+                <div class="letter">E</div>
+                <div class="letter">F</div>
+                <div class="letter">G</div>
+                <div class="letter">H</div>
+                <div class="letter">I</div>
+                <div class="letter">J</div>
+                <div class="letter">K</div>
+                <div class="letter">L</div>
+                <div class="letter">M</div>
+                <div class="letter">N</div>
+                <div class="letter">O</div>
+                <div class="letter">P</div>
+                <div class="letter">Q</div>
+                <div class="letter">R</div>
+                <div class="letter">S</div>
+                <div class="letter">T</div>
+                <div class="letter">U</div>
+                <div class="letter">V</div>
+                <div class="letter">W</div>
+                <div class="letter">X</div>
+                <div class="letter">Y</div>
+                <div class="letter">Z</div>
+            </div>
+        </div>
+        <div class="right-section">
+            <!-- Espace réservé pour le stickman -->
+        </div>
+    </div>
+
+  </div>
+    <div class="footer">
+        <svg class="footer-icon" viewBox="0 0 24 24">
+            <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z" fill="black"/>
+        </svg>
+        <svg class="footer-icon" viewBox="0 0 24 24">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" fill="black"/>
+        </svg>
+    </div>
+
+</div>
+</body>
+</html>
+{{end}}

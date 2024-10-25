@@ -31,8 +31,8 @@
  }
  
 .logo-container {
-    width: 500px;  
-    height: 140px; 
+    width: 600px;  
+    height: 200px; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,7 +41,7 @@
 .logo-container svg{
     width: 100%;
     height: 100%;
-    transform: scale(1.2);  
+    transform: scale(1.1);  
     transition: transform 0.3s ease; 
 }
 
@@ -69,13 +69,13 @@ logo-container:hover svg {
  
  h1 {
      font-family: 'Belinsky Text Bold';
-     font-size: 120px;  /* Augmenté de 48px à 72px */
-     letter-spacing: 15px;  /* Augmenté de 10px à 15px */
-     margin: 0px 0px 30px 0px;  /* Augmenté de 40px à 60px */
+     font-size: 120px;  
+     letter-spacing: 15px;  
+     margin: 0px 0px 30px 0px;  
      text-align: center;
-     text-transform: uppercase;  /* Ajouté pour plus d'impact */
-     font-weight: bold;  /* Ajouté pour plus d'emphase */
-     text-shadow: 3px 3px 0px rgba(0,0,0,0.1);  /* Ajouté pour de la profondeur */
+     text-transform: uppercase;  
+     font-weight: bold;  
+     text-shadow: 3px 3px 0px rgba(0,0,0,0.1);  
  }
  
  .difficulty-buttons {

@@ -34,6 +34,24 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func gameHandler(w http.ResponseWriter, r *http.Request) {
+	if err := templates.ExecuteTemplate(w, "game", nil); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func endgameHandler(w http.ResponseWriter, r *http.Request) {
+	if err := templates.ExecuteTemplate(w, "endgame", nil); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func scoresHandler(w http.ResponseWriter, r *http.Request) {
+	if err := templates.ExecuteTemplate(w, "scores", nil); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
 // Validate the form
 
 // Fonctions utilitaires
@@ -46,6 +64,10 @@ func setupRoutes() {
 	// Routes
 
 	http.HandleFunc("/home", homeHandler)
+	http.HandleFunc("/game", gameHandler)
+	http.HandleFunc("/endgame", endgameHandler)
+	http.HandleFunc("/scores", scoresHandler)
+	http.HandleFunc("/index", homeHandler)
 }
 
 func main() {

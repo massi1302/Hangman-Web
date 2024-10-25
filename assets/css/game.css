@@ -1,0 +1,97 @@
+
+body {
+    background-color: #fff;
+    margin: 0;
+    padding: 15px;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.title {
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+}
+
+.score {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hidden-word {
+    text-align: center;
+    margin-bottom: 80px;
+    margin-top: 100px;
+    font-size: 24px;
+    letter-spacing: 15px;
+}
+
+.hidden-word span {
+    display: inline-block;
+    width: 20px;
+    height: 2px;
+    background-color: black;
+    margin: 0 5px;
+}
+
+.game-container {
+    display: flex;
+    max-width: 1000px;
+    height: 400px;
+    margin: 0 auto;
+}
+
+.left-section {
+    flex: 0 0 50%;
+}
+
+.alphabet-container {
+    display: grid;
+    grid-template-columns: repeat(6, 45px);
+    gap: 5px;
+    margin-left: 20px;
+}
+
+.letter {
+    width: 40px;
+    height: 40px;
+    border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.right-section {
+    flex: 0 0 50%;
+    /* Espace réservé pour le stickman */
+}
+
+.home-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.footer {
+    position: static;
+    width: 100%;
+    display: flex;
+    gap: 20px;
+       justify-content: flex-start;
+       padding: 10px 0;
+}
+
+.footer-icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
