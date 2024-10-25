@@ -1,0 +1,106 @@
+@font-face {
+    font-family: 'Belinsky';
+    src: url('../fonts/belinsky-text/Belinsky\ Text\ Bold.otf');
+    src: url('../fonts/belinsky-text/Belinsky\ Text\ Regular.otf');
+ }
+ 
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+ 
+ body {
+     margin: 0;
+     padding: 15px;
+     min-height: 100vh;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     background: white;
+     font-family: Arial, sans-serif;
+     justify-content: space-between;
+ }
+ 
+.logo-container {
+    width: 600px;  
+    height: 200px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ }
+
+.logo-container svg{
+    width: 100%;
+    height: 100%;
+    transform: scale(1.1);  
+    transition: transform 0.3s ease; 
+}
+
+logo-container:hover svg {
+    transform: scale(1.25); 
+}
+
+ 
+ .difficulty-buttons {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     gap: 15px;
+     margin:15px 0;
+ }
+ 
+ .button {
+     padding: 10px 30px;
+     font-size: 20px;
+     border: 2px solid black;
+     background: white;
+     cursor: pointer;
+     text-transform: uppercase;
+     min-width: 120px;
+     text-align: center;
+     transition: all 0.3s ease;
+ }
+
+    .button:hover {
+        background: black;
+        color: white;
+    }
+ 
+ 
+ 
+ 
+.main-content{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 5px 0;
+}
+
+ .footer {
+    position: static;
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    justify-content: flex-start;
+    padding: 10px 0;
+ }
+ 
+ .footer-icon {
+     width: 25px;
+     height: 25px;
+     cursor: pointer;
+ }
+ 
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}

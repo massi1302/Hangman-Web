@@ -52,6 +52,12 @@ func scoresHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+	if err := templates.ExecuteTemplate(w, "index", nil); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
 // Validate the form
 
 // Fonctions utilitaires
@@ -67,7 +73,7 @@ func setupRoutes() {
 	http.HandleFunc("/game", gameHandler)
 	http.HandleFunc("/endgame", endgameHandler)
 	http.HandleFunc("/scores", scoresHandler)
-	http.HandleFunc("/index", homeHandler)
+	http.HandleFunc("/index", indexHandler)
 }
 
 func main() {
