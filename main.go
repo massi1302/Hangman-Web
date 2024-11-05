@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	hangman "hangman/game"
 	"html/template"
 	"log"
 	"net/http"
@@ -14,9 +16,13 @@ const (
 )
 
 // Structures de données
+type Session struct {
+	Username string
+}
 
 // Variables globales
 var templates *template.Template
+var selectedDifficulty string
 
 // validateurs
 func init() {
@@ -28,15 +34,49 @@ func init() {
 }
 
 // Gestionnaires HTTP
+func startGameHandler(respWriter http.ResponseWriter, req *http.Request) {
+	if req.Method != http.MethodPost {
+		http.Redirect(respWriter, req, "/index", http.StatusSeeOther)
+		return
+	}
+
+	username := req.FormValue("username")
+	if username == "" {
+		http.Redirect(respWriter, req, "/index", http.StatusSeeOther)
+		return
+	}
+
+	// Set username cookie
+	cookie := &http.Cookie{
+		Name:     "username",
+		Value:    username,
+		Path:     "/",
+		MaxAge:   3600,
+		HttpOnly: true,
+	}
+	http.SetCookie(respWriter, cookie)
+
+	// Redirect to home page
+	http.Redirect(respWriter, req, "/home", http.StatusSeeOther)
+}
+
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	if err := templates.ExecuteTemplate(w, "home", nil); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
 
-func gameHandler(w http.ResponseWriter, r *http.Request) {
-	if err := templates.ExecuteTemplate(w, "game", nil); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+func gameHandler(resp http.ResponseWriter, req *http.Request) {
+	if req.Method == http.MethodPost {
+		fmt.Println("Query :", req.URL.Query())
+		difficulty := req.FormValue("difficulty")
+		usernameCookie, _ := req.Cookie("username")
+		filteredGameState := hangman.NewGame(usernameCookie.Value, difficulty)
+		if err := templates.ExecuteTemplate(resp, "game", filteredGameState); err != nil {
+			http.Error(resp, err.Error(), http.StatusInternalServerError)
+		}
+	} else {
+		http.Error(resp, "Invalid request method", http.StatusMethodNotAllowed)
 	}
 }
 
@@ -58,26 +98,63 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func setDifficultyHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		selectedDifficulty = r.FormValue("difficulty")
+		fmt.Println("Difficulté choisie:", selectedDifficulty)
+
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	} else {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+	}
+}
+
+func letterHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		usernameCookie, _ := r.Cookie("username")
+		letter := r.URL.Query().Get("letter")
+		newGameState := hangman.GetGameState(usernameCookie.Value).GuessLetter(letter)
+		if !newGameState.GameOver {
+			if err := templates.ExecuteTemplate(w, "game", newGameState.ToFilteredGameState()); err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+			}
+		} else if newGameState.Victory {
+
+		} else {
+			http.Redirect(w, r, "/endgame", http.StatusSeeOther)
+		}
+	} else {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+	}
+}
+
 // Validate the form
 
 // Fonctions utilitaires
 
-func setupRoutes() {
-	// Serveur de fichiers statiques
+func serveMux() *http.ServeMux {
 	fs := http.FileServer(http.Dir(ASSETS_DIR))
-	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
+	serveMux := http.NewServeMux()
+
+	// Serveur de fichiers statiques
+	serveMux.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	// Routes
+	serveMux.HandleFunc("/", indexHandler)
+	serveMux.HandleFunc("/home", homeHandler)
+	serveMux.HandleFunc("/game", gameHandler)
+	serveMux.HandleFunc("/endgame", endgameHandler)
+	serveMux.HandleFunc("/scores", scoresHandler)
+	serveMux.HandleFunc("/index", indexHandler)
+	serveMux.HandleFunc("/start-game", startGameHandler)
+	serveMux.HandleFunc("/set-difficulty", setDifficultyHandler)
+	serveMux.HandleFunc("/guess", letterHandler)
 
-	http.HandleFunc("/home", homeHandler)
-	http.HandleFunc("/game", gameHandler)
-	http.HandleFunc("/endgame", endgameHandler)
-	http.HandleFunc("/scores", scoresHandler)
-	http.HandleFunc("/index", indexHandler)
+	return serveMux
 }
 
 func main() {
-	setupRoutes()
 	log.Printf("Serveur démarré sur http://localhost%s", PORT)
-	log.Fatal(http.ListenAndServe("localhost"+PORT, nil))
+
+	log.Fatal(http.ListenAndServe("localhost"+PORT, serveMux()))
 }

@@ -1,8 +1,14 @@
+@font-face {
+    font-family: 'Belinsky';
+    src: url('../fonts/belinsky-text/Belinsky\ Text\ Bold.otf');
+    src: url('../fonts/belinsky-text/Belinsky\ Text\ Regular.otf');
+}
 
 body {
     background-color: #fff;
     margin: 0;
     padding: 15px;
+    font-family: Arial, sans-serif;
 }
 
 .header {
@@ -10,24 +16,26 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
 }
 
-.title {
-    font-family: Arial, sans-serif;
-    font-size: 24px;
+.home-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
 }
 
 .score {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-direction: column;
 }
 
 .hidden-word {
     text-align: center;
     margin-bottom: 80px;
-    margin-top: 100px;
+    margin-top: 21px;
     font-size: 24px;
     letter-spacing: 15px;
 }
@@ -43,42 +51,60 @@ body {
 .game-container {
     display: flex;
     max-width: 1000px;
-    height: 400px;
+    height: 420px;
     margin: 0 auto;
 }
 
 .left-section {
     flex: 0 0 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.alphabet-container {
+.keyboard {
     display: grid;
     grid-template-columns: repeat(6, 45px);
-    gap: 5px;
-    margin-left: 20px;
+    gap: 18px;
+    height: 330px; /* Même hauteur que l'image du pendu */
 }
 
-.letter {
-    width: 40px;
-    height: 40px;
-    border: 2px solid black;
+.keyboard button {
+    width: 55px;
+    height: 55px;
+    border: 5px solid black;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Arial, sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 30px;
+    cursor: pointer;
+    text-transform: uppercase;
+    outline: none;
+    background: white;
 }
 
 .right-section {
     flex: 0 0 50%;
-    /* Espace réservé pour le stickman */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.home-icon {
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
+.lives {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.hangman-img {
+    max-height: 330px; /* Même hauteur que le clavier */
+    width: auto;
 }
 
 .footer {
@@ -86,8 +112,8 @@ body {
     width: 100%;
     display: flex;
     gap: 20px;
-       justify-content: flex-start;
-       padding: 10px 0;
+    justify-content: flex-start;
+    padding: 10px 0;
 }
 
 .footer-icon {

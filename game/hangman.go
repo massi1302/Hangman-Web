@@ -2,32 +2,48 @@ package hangman
 
 import (
 	"encoding/json"
+	"html/template"
 	"math/rand"
 	"strings"
 )
 
+var gameStatePerUser = make(map[string]*GameState)
+
 // GameState représente l'état actuel d'une partie
 type GameState struct {
-	Word          string   `json:"word"`
-	DisplayedWord []string `json:"displayedWord"`
-	Lives         int      `json:"lives"`
-	UsedLetters   []string `json:"usedLetters"`
-	GameOver      bool     `json:"gameOver"`
-	Victory       bool     `json:"victory"`
-	Score         int      `json:"score"`
+	Word          string
+	DisplayedWord []string
+	Lives         int
+	UsedLetters   []string
+	UnusedLetters []string
+	GameOver      bool
+	Victory       bool
+	Score         int
+	Hearts        int
+}
+
+type FilteredGameState struct {
+	DisplayedWord []string
+	Lives         int
+	UsedLetters   []string
+	UnusedLetters []string
+	GameOver      bool
+	Victory       bool
+	Score         int
+	Hearts        int
 }
 
 // NewGame initialise une nouvelle partie
-func NewGame(difficulty string) *GameState {
+func NewGame(user string, difficulty string) *FilteredGameState {
 	// Choisir le fichier de mots selon la difficulté
 	filename := "words.txt"
 	switch difficulty {
 	case "EASY":
-		filename = "easy.txt"
+		filename = "./data/easy_words.txt"
 	case "MEDIUM":
-		filename = "medium.txt"
+		filename = "./data/medium_words.txt"
 	case "HARD":
-		filename = "hard.txt"
+		filename = "./data/hard_words.txt"
 	}
 
 	word := RandomWord(filename)
@@ -56,25 +72,65 @@ func NewGame(difficulty string) *GameState {
 		displayedWord[randIndex] = string(word[randIndex])
 	}
 
-	return &GameState{
-		Word:          word,
-		DisplayedWord: displayedWord,
-		Lives:         10,
-		UsedLetters:   make([]string, 0),
-		GameOver:      false,
-		Victory:       false,
-		Score:         0,
+	if gameStatePerUser[user] != nil {
+		gameStatePerUser[user].Word = word
+		gameStatePerUser[user].DisplayedWord = displayedWord
+		gameStatePerUser[user].Lives = 6
+		gameStatePerUser[user].UsedLetters = make([]string, 0)
+		gameStatePerUser[user].UnusedLetters = []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
+		gameStatePerUser[user].GameOver = false
+		gameStatePerUser[user].Hearts = 6
+	} else {
+		gameStatePerUser[user] = &GameState{
+			Word:          word,
+			DisplayedWord: displayedWord,
+			Lives:         6,
+			UsedLetters:   make([]string, 0),
+			UnusedLetters: []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"},
+			GameOver:      false,
+			Victory:       false,
+			Score:         0,
+			Hearts:        6,
+		}
+	}
+
+	return &FilteredGameState{
+		DisplayedWord: gameStatePerUser[user].DisplayedWord,
+		Lives:         gameStatePerUser[user].Lives,
+		UsedLetters:   gameStatePerUser[user].UsedLetters,
+		UnusedLetters: gameStatePerUser[user].UnusedLetters,
+		GameOver:      gameStatePerUser[user].GameOver,
+		Victory:       gameStatePerUser[user].Victory,
+		Score:         gameStatePerUser[user].Score,
+		Hearts:        gameStatePerUser[user].Hearts,
 	}
 }
 
+func (g *GameState) ToFilteredGameState() *FilteredGameState {
+	return &FilteredGameState{
+		DisplayedWord: g.DisplayedWord,
+		Lives:         g.Lives,
+		UsedLetters:   g.UsedLetters,
+		UnusedLetters: g.UnusedLetters,
+		GameOver:      g.GameOver,
+		Victory:       g.Victory,
+		Score:         g.Score,
+		Hearts:        g.Hearts,
+	}
+}
+
+func GetGameState(user string) *GameState {
+	return gameStatePerUser[user]
+}
+
 // GuessLetter traite une tentative de lettre
-func (g *GameState) GuessLetter(letter string) bool {
+func (g *GameState) GuessLetter(letter string) *GameState {
 	letter = strings.ToLower(letter)
 
 	// Vérifier si la lettre a déjà été utilisée
 	for _, usedLetter := range g.UsedLetters {
 		if usedLetter == letter {
-			return false
+			return g
 		}
 	}
 
@@ -93,12 +149,13 @@ func (g *GameState) GuessLetter(letter string) bool {
 	// Si la lettre n'est pas dans le mot, perdre une vie
 	if !correct {
 		g.Lives--
+		g.Hearts--
 	}
 
 	// Vérifier si la partie est terminée
 	g.checkGameEnd()
 
-	return correct
+	return g
 }
 
 // GuessWord traite une tentative de mot complet
@@ -139,4 +196,13 @@ func (g *GameState) checkGameEnd() {
 // ToJSON convertit l'état du jeu en JSON
 func (g *GameState) ToJSON() ([]byte, error) {
 	return json.Marshal(g)
+}
+
+func (f *FilteredGameState) DrawHearts() template.HTML {
+	heartIcon := "❤️"
+	var heartString string
+	for i := 0; i < f.Hearts; i++ {
+		heartString += heartIcon + " "
+	}
+	return template.HTML(heartString)
 }

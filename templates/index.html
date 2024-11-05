@@ -11,9 +11,7 @@
     <div class="main-content">
         <div class="logo-container">
             <svg viewbox="0 0 300 50">
-               
                 <g id="letters" fill="#2C3E50" font-family="Belinsky" font-size="40">
-                    
                     <text x="20" y="35" transform="rotate(-1,20,35)">
                         H
                         <animate attributename="y" values="35;35.5;35" dur="2.5s" repeatcount="indefinite"></animate>
@@ -55,21 +53,39 @@
             </svg>
         </div>
         <div class="difficulty-buttons">
-            <div class="button ">Nouvelle Partie</div>
+            <form action="/submit-username" method="POST" class="button" onclick="document.getElementById('usernameModal').style.display='flex';">
+                Nouvelle Partie
+            </form>
             <div class="button">Options</div>
-            <div class="button">Scores</div>
+            <div class="button">Scores </div>
+        </div>
+
+        <div class="footer">
+            <svg class="footer-icon" viewbox="0 0 24 24">
+                <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z" fill="black" />
+            </svg>
+            <svg class="footer-icon" viewbox="0 0 24 24">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" fill="black" />
+            </svg>
+        </div>
+    </main>
+
+    <div id="usernameModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('usernameModal').style.display='none';">&times;</span>
+            <form action="/start-game" method="POST" class="username-form">
+                <h2>Entrez votre pseudo</h2>
+                <input type="text" 
+                       name="username" 
+                       class="username-input" 
+                       required 
+                       placeholder="Votre pseudo"
+                       minlength="2"
+                       maxlength="20">
+                <button type="submit" class="button">Commencer</button>
+            </form>
         </div>
     </div>
-    <div class="footer">
-        <svg class="footer-icon" viewBox="0 0 24 24">
-            <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z" fill="black"/>
-        </svg>
-        <svg class="footer-icon" viewBox="0 0 24 24">
-            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" fill="black"/>
-        </svg>
-    </div>
-
-</div>
 </body>
 </html>
 {{end}}
