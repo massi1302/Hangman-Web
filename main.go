@@ -2,23 +2,14 @@ package main
 
 import (
 	"fmt"
+	"hangman/config"
 	hangman "hangman/game"
+	"hangman/util"
 	"html/template"
 	"log"
+	"net"
 	"net/http"
 )
-
-const (
-	PORT         = ":8080"
-	TEMPLATE_DIR = "./Templates/*.html"
-	ASSETS_DIR   = "assets"
-	DATE_FORMAT  = "2006-01-02"
-)
-
-// Structures de données
-type Session struct {
-	Username string
-}
 
 // Variables globales
 var templates *template.Template
@@ -27,14 +18,14 @@ var selectedDifficulty string
 // validateurs
 func init() {
 	var err error
-	templates, err = template.ParseGlob(TEMPLATE_DIR)
+	templates, err = template.ParseGlob(config.App.Server.StaticWeb.Template.Dir)
 	if err != nil {
-		log.Fatalf("Erreur lors du chargement des templates: %v", err)
+		log.Fatalf("Erreur lors du chargement des templates: %v\n", err)
 	}
 }
 
 // Gestionnaires HTTP
-func startGameHandler(respWriter http.ResponseWriter, req *http.Request) {
+func loginHandler(respWriter http.ResponseWriter, req *http.Request) {
 	if req.Method != http.MethodPost {
 		http.Redirect(respWriter, req, "/index", http.StatusSeeOther)
 		return
@@ -68,11 +59,20 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 
 func gameHandler(resp http.ResponseWriter, req *http.Request) {
 	if req.Method == http.MethodPost {
-		fmt.Println("Query :", req.URL.Query())
 		difficulty := req.FormValue("difficulty")
-		usernameCookie, _ := req.Cookie("username")
-		filteredGameState := hangman.NewGame(usernameCookie.Value, difficulty)
-		if err := templates.ExecuteTemplate(resp, "game", filteredGameState); err != nil {
+		usernameCookie, err := req.Cookie("username")
+		if err != nil {
+			http.Error(resp, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		filteredGameState, err := hangman.NewGame(usernameCookie.Value, difficulty)
+		if err != nil {
+			http.Error(resp, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		if err := templates.ExecuteTemplate(resp, "game", util.NewGameData(filteredGameState)); err != nil {
 			http.Error(resp, err.Error(), http.StatusInternalServerError)
 		}
 	} else {
@@ -114,14 +114,9 @@ func letterHandler(w http.ResponseWriter, r *http.Request) {
 		usernameCookie, _ := r.Cookie("username")
 		letter := r.URL.Query().Get("letter")
 		newGameState := hangman.GetGameState(usernameCookie.Value).GuessLetter(letter)
-		if !newGameState.GameOver {
-			if err := templates.ExecuteTemplate(w, "game", newGameState.ToFilteredGameState()); err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-			}
-		} else if newGameState.Victory {
 
-		} else {
-			http.Redirect(w, r, "/endgame", http.StatusSeeOther)
+		if err := templates.ExecuteTemplate(w, "game", util.NewGameData(newGameState.ToFilteredGameState())); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	} else {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
@@ -133,7 +128,7 @@ func letterHandler(w http.ResponseWriter, r *http.Request) {
 // Fonctions utilitaires
 
 func serveMux() *http.ServeMux {
-	fs := http.FileServer(http.Dir(ASSETS_DIR))
+	fs := http.FileServer(http.Dir(config.App.Server.StaticWeb.Assets.Dir))
 	serveMux := http.NewServeMux()
 
 	// Serveur de fichiers statiques
@@ -146,7 +141,7 @@ func serveMux() *http.ServeMux {
 	serveMux.HandleFunc("/endgame", endgameHandler)
 	serveMux.HandleFunc("/scores", scoresHandler)
 	serveMux.HandleFunc("/index", indexHandler)
-	serveMux.HandleFunc("/start-game", startGameHandler)
+	serveMux.HandleFunc("/login", loginHandler)
 	serveMux.HandleFunc("/set-difficulty", setDifficultyHandler)
 	serveMux.HandleFunc("/guess", letterHandler)
 
@@ -154,7 +149,6 @@ func serveMux() *http.ServeMux {
 }
 
 func main() {
-	log.Printf("Serveur démarré sur http://localhost%s", PORT)
-
-	log.Fatal(http.ListenAndServe("localhost"+PORT, serveMux()))
+	log.Printf("Serveur démarré sur http://%s\n", net.JoinHostPort(config.App.Server.URL, config.App.Server.Port))
+	log.Fatal(http.ListenAndServe(net.JoinHostPort(config.App.Server.URL, config.App.Server.Port), serveMux()))
 }

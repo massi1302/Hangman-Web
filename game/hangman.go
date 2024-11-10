@@ -3,51 +3,76 @@ package hangman
 import (
 	"encoding/json"
 	"html/template"
+	"log"
 	"math/rand"
 	"strings"
+	"unicode/utf8"
 )
+
+// /assets/images/hangman-9.png
+var hangmanDraw = make(map[int]string)
 
 var gameStatePerUser = make(map[string]*GameState)
 
+const lives = 10
+
 // GameState représente l'état actuel d'une partie
 type GameState struct {
+	Difficulty    string
 	Word          string
 	DisplayedWord []string
 	Lives         int
 	UsedLetters   []string
-	UnusedLetters []string
 	GameOver      bool
 	Victory       bool
 	Score         int
-	Hearts        int
 }
 
 type FilteredGameState struct {
+	Difficulty    string
 	DisplayedWord []string
 	Lives         int
 	UsedLetters   []string
-	UnusedLetters []string
 	GameOver      bool
 	Victory       bool
 	Score         int
-	Hearts        int
+}
+
+func init() {
+	hangmanDraw[1] = "/assets/images/hangman-0.png"
+	hangmanDraw[2] = "/assets/images/hangman-1.png"
+	hangmanDraw[3] = "/assets/images/hangman-2.png"
+	hangmanDraw[4] = "/assets/images/hangman-3.png"
+	hangmanDraw[5] = "/assets/images/hangman-4.png"
+	hangmanDraw[6] = "/assets/images/hangman-5.png"
+	hangmanDraw[7] = "/assets/images/hangman-6.png"
+	hangmanDraw[8] = "/assets/images/hangman-7.png"
+	hangmanDraw[9] = "/assets/images/hangman-8.png"
+	hangmanDraw[10] = "/assets/images/hangman-9.png"
 }
 
 // NewGame initialise une nouvelle partie
-func NewGame(user string, difficulty string) *FilteredGameState {
+func NewGame(user string, difficulty string) (*FilteredGameState, error) {
 	// Choisir le fichier de mots selon la difficulté
-	filename := "words.txt"
+	var path string
 	switch difficulty {
 	case "EASY":
-		filename = "./data/easy_words.txt"
+		path = "./resources/data/easy_words.txt"
 	case "MEDIUM":
-		filename = "./data/medium_words.txt"
+		path = "./resources/data/medium_words.txt"
 	case "HARD":
-		filename = "./data/hard_words.txt"
+		path = "./resources/data/hard_words.txt"
+	default:
+		path = "./resources/data/easy_words.txt"
 	}
 
-	word := RandomWord(filename)
-	displayedWord := make([]string, len(word))
+	word, err := RandomWord(path)
+	if err != nil {
+		log.Printf("Error generating random word: %v\n", err)
+		return nil, err
+	}
+
+	displayedWord := make([]string, utf8.RuneCountInString(*word))
 	for i := range displayedWord {
 		displayedWord[i] = "_"
 	}
@@ -64,58 +89,49 @@ func NewGame(user string, difficulty string) *FilteredGameState {
 	// Révéler des lettres aléatoires
 	revealed := make(map[int]bool)
 	for i := 0; i < nbLettersToReveal; i++ {
-		randIndex := rand.Intn(len(word))
+		randIndex := rand.Intn(utf8.RuneCountInString(*word))
 		for revealed[randIndex] {
-			randIndex = rand.Intn(len(word))
+			randIndex = rand.Intn(utf8.RuneCountInString(*word))
 		}
 		revealed[randIndex] = true
-		displayedWord[randIndex] = string(word[randIndex])
+		displayedWord[randIndex] = string([]rune(*word)[randIndex])
 	}
 
-	if gameStatePerUser[user] != nil {
-		gameStatePerUser[user].Word = word
-		gameStatePerUser[user].DisplayedWord = displayedWord
-		gameStatePerUser[user].Lives = 6
-		gameStatePerUser[user].UsedLetters = make([]string, 0)
-		gameStatePerUser[user].UnusedLetters = []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
-		gameStatePerUser[user].GameOver = false
-		gameStatePerUser[user].Hearts = 6
+	gameState := gameStatePerUser[user]
+
+	if gameState != nil {
+		gameState.Difficulty = difficulty
+		gameState.Word = *word
+		gameState.DisplayedWord = displayedWord
+		gameState.Lives = lives
+		gameState.UsedLetters = make([]string, 0)
+		gameState.GameOver = false
 	} else {
-		gameStatePerUser[user] = &GameState{
-			Word:          word,
+		gameState = &GameState{
+			Difficulty:    difficulty,
+			Word:          *word,
 			DisplayedWord: displayedWord,
-			Lives:         6,
+			Lives:         lives,
 			UsedLetters:   make([]string, 0),
-			UnusedLetters: []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"},
 			GameOver:      false,
 			Victory:       false,
 			Score:         0,
-			Hearts:        6,
 		}
+		gameStatePerUser[user] = gameState
 	}
 
-	return &FilteredGameState{
-		DisplayedWord: gameStatePerUser[user].DisplayedWord,
-		Lives:         gameStatePerUser[user].Lives,
-		UsedLetters:   gameStatePerUser[user].UsedLetters,
-		UnusedLetters: gameStatePerUser[user].UnusedLetters,
-		GameOver:      gameStatePerUser[user].GameOver,
-		Victory:       gameStatePerUser[user].Victory,
-		Score:         gameStatePerUser[user].Score,
-		Hearts:        gameStatePerUser[user].Hearts,
-	}
+	return gameState.ToFilteredGameState(), nil
 }
 
 func (g *GameState) ToFilteredGameState() *FilteredGameState {
 	return &FilteredGameState{
+		Difficulty:    g.Difficulty,
 		DisplayedWord: g.DisplayedWord,
 		Lives:         g.Lives,
 		UsedLetters:   g.UsedLetters,
-		UnusedLetters: g.UnusedLetters,
 		GameOver:      g.GameOver,
 		Victory:       g.Victory,
 		Score:         g.Score,
-		Hearts:        g.Hearts,
 	}
 }
 
@@ -149,7 +165,6 @@ func (g *GameState) GuessLetter(letter string) *GameState {
 	// Si la lettre n'est pas dans le mot, perdre une vie
 	if !correct {
 		g.Lives--
-		g.Hearts--
 	}
 
 	// Vérifier si la partie est terminée
@@ -176,21 +191,23 @@ func (g *GameState) GuessWord(word string) bool {
 }
 
 // checkGameEnd vérifie si la partie est terminée
-func (g *GameState) checkGameEnd() {
+func (g *GameState) checkGameEnd() bool {
 	// Vérifier la victoire
 	if strings.Join(g.DisplayedWord, "") == strings.ToLower(g.Word) {
 		g.Victory = true
 		g.GameOver = true
-		g.Score = g.Lives * 100
-		return
+		g.Score += g.Lives * 100
+		return true
 	}
 
 	// Vérifier la défaite
 	if g.Lives <= 0 {
 		g.GameOver = true
 		g.Victory = false
-		g.Score = 0
+		return true
 	}
+
+	return false
 }
 
 // ToJSON convertit l'état du jeu en JSON
@@ -201,8 +218,15 @@ func (g *GameState) ToJSON() ([]byte, error) {
 func (f *FilteredGameState) DrawHearts() template.HTML {
 	heartIcon := "❤️"
 	var heartString string
-	for i := 0; i < f.Hearts; i++ {
+	for i := 0; i < f.Lives; i++ {
 		heartString += heartIcon + " "
 	}
 	return template.HTML(heartString)
+}
+
+func (f *FilteredGameState) HangmanDraw(remainingLives int) string {
+	if remainingLives == 0 {
+		return hangmanDraw[lives]
+	}
+	return hangmanDraw[lives-remainingLives+1]
 }

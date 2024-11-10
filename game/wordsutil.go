@@ -1,34 +1,27 @@
 package hangman
 
 import (
+	"log"
 	"math/rand"
 	"os"
 	"strings"
 	"time"
 )
 
-// FileExists checks if a file exists and is not a directory before we
-// try using it to prevent further errors.
-func FileExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
+func RandomWord(path string) (*string, error) {
+	words, err := FileToStringArray(path)
+	if err != nil {
+		return nil, err
 	}
-	return !info.IsDir()
-}
-
-func RandomWord(filename string) string {
-	words := FileToStringArray(filename)
 	randomIndex := rand.New(rand.NewSource(time.Now().UnixNano())).Intn(len(words))
-	return words[randomIndex]
+	return &words[randomIndex], nil
 }
 
-func FileToStringArray(filename string) []string {
-	var response []string
+func FileToStringArray(filename string) ([]string, error) {
 	content, err := os.ReadFile(filename)
 	if err != nil {
-		panic("Error when opening file")
+		log.Printf("Error reading file: %v\n", err)
+		return nil, err
 	}
-	response = strings.Split(string(content), "\n")
-	return response
+	return strings.Split(string(content), "\r\n"), nil
 }
