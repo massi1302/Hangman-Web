@@ -70,6 +70,15 @@ body {
     height: 330px; /* Même hauteur que l'image du pendu */
 }
 
+/* TODO */
+.used-letter {
+    background: black !important;
+}
+
+.words-letter {
+    background: #45a049 !important;
+}
+
 .keyboard button {
     width: 55px;
     height: 55px;

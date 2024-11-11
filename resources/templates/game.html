@@ -27,14 +27,14 @@
             <form class="keyboard" method="post">
                 {{range .Alphabet}}
                 <button
+                        class="{{if $.FilteredGameState.IsUsedLetter .}}used-letter{{else if $.FilteredGameState.IsWordsLetter .}}words-letter{{end}}"
                         type="submit"
                         formaction="/guess?letter={{.}}"
                         name="letter"
                         value="{{.}}"
                 >
                     {{.}}
-                </button
-                >
+                </button>
                 {{end}}
             </form>
         </div>
@@ -43,7 +43,7 @@
         <div class="lives">
             {{ .FilteredGameState.DrawHearts }}
         </div>
-        <img class="hangman-img" src="{{ .FilteredGameState.HangmanDraw .FilteredGameState.Lives }}" alt=""/>
+        <img class="hangman-img" src="{{ .FilteredGameState.DrawHangman .FilteredGameState.Lives }}" alt=""/>
     </div>
 </div>
 
@@ -62,23 +62,26 @@
     </svg>
 </div>
 
+{{if .FilteredGameState.GameOver}}
 <div id="gameoverModal" class="modal" style="{{if .FilteredGameState.GameOver}} display: flex {{end}}">
     <div class="modal-content">
         <form action="/game" method="post">
             <input type="hidden" name="difficulty" value="{{ .FilteredGameState.Difficulty }}">
             <button id="replayButton" type="submit" class="button">Rejouer</button>
         </form>
-       <div>
-            <h1>{{if .FilteredGameState.Victory}}Gagné !
+        <div>
+            <h1>{{if .FilteredGameState.Victory}}
+                Gagné !
                 {{else}}
                 GAME OVER.
                 YOU SAVED {{ .FilteredGameState.Score }} Pts
                 {{end}}
             </h1>
-            <p>Le mot était : {{ .FilteredGameState.Word }}</p>
-       </div>
+            <p>Le mot était : {{ .Word }}</p>
+        </div>
     </div>
 </div>
+{{end}}
 
 </body>
 </html>

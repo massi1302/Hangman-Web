@@ -1,147 +1,148 @@
 {{define "home"}}
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="/assets/css/home.css" />
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="/assets/css/home.css"/>
     <title>Hangman</title>
-  </head>
-  <body>
-    <div class="header">
-      <a href="/">
+</head>
+<body>
+<div class="header">
+    <a href="/">
         <svg class="home-icon" viewBox="0 0 24 24">
-          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="black" />
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="black"/>
         </svg>
-      </a>
-      <div class="score">
-        <div>SAVED: 0</div>
-        <div>BEST: 0</div>
+    </a>
+    <div class="score">
+        <div>SAVED: {{.Score}}</div>
+        <div>BEST: TODO</div>
         <svg class="balloon-icon" viewBox="0 0 24 24">
-          <path
-            d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7z"
-            fill="#d35f5f"
-          />
+            <path
+                    d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7z"
+                    fill="#d35f5f"
+            />
         </svg>
-      </div>
     </div>
-    <div class="main-content">
-      <div class="logo-container">
+</div>
+<div class="main-content">
+    <div class="logo-container">
         <svg viewbox="0 0 300 50">
-          <g id="letters" fill="#2C3E50" font-family="Belinsky" font-size="40">
-            <text x="20" y="35" transform="rotate(-1,20,35)">
-              H
-              <animate
-                attributename="y"
-                values="35;35.5;35"
-                dur="2.5s"
-                repeatcount="indefinite"
-              ></animate>
-            </text>
+            <g id="letters" fill="#2C3E50" font-family="Belinsky" font-size="40">
+                <text x="20" y="35" transform="rotate(-1,20,35)">
+                    H
+                    <animate
+                            attributename="y"
+                            values="35;35.5;35"
+                            dur="2.5s"
+                            repeatcount="indefinite"
+                    ></animate>
+                </text>
 
-            <text x="60" y="34.5" transform="rotate(0.5,60,34.5)">
-              A
-              <animate
-                attributename="y"
-                values="34.5;35;34.5"
-                dur="2.7s"
-                repeatcount="indefinite"
-              ></animate>
-            </text>
+                <text x="60" y="34.5" transform="rotate(0.5,60,34.5)">
+                    A
+                    <animate
+                            attributename="y"
+                            values="34.5;35;34.5"
+                            dur="2.7s"
+                            repeatcount="indefinite"
+                    ></animate>
+                </text>
 
-            <text x="100" y="35" transform="rotate(-0.5,100,35)">
-              N
-              <animate
-                attributename="y"
-                values="35;35.5;35"
-                dur="2.3s"
-                repeatcount="indefinite"
-              ></animate>
-            </text>
+                <text x="100" y="35" transform="rotate(-0.5,100,35)">
+                    N
+                    <animate
+                            attributename="y"
+                            values="35;35.5;35"
+                            dur="2.3s"
+                            repeatcount="indefinite"
+                    ></animate>
+                </text>
 
-            <text x="140" y="34.5" transform="rotate(1,140,34.5)">
-              G
-              <animate
-                attributename="y"
-                values="34.5;35;34.5"
-                dur="2.6s"
-                repeatcount="indefinite"
-              ></animate>
-            </text>
+                <text x="140" y="34.5" transform="rotate(1,140,34.5)">
+                    G
+                    <animate
+                            attributename="y"
+                            values="34.5;35;34.5"
+                            dur="2.6s"
+                            repeatcount="indefinite"
+                    ></animate>
+                </text>
 
-            <text x="180" y="35" transform="rotate(-0.5,180,35)">
-              M
-              <animate
-                attributename="y"
-                values="35;35.5;35"
-                dur="2.4s"
-                repeatcount="indefinite"
-              ></animate>
-            </text>
+                <text x="180" y="35" transform="rotate(-0.5,180,35)">
+                    M
+                    <animate
+                            attributename="y"
+                            values="35;35.5;35"
+                            dur="2.4s"
+                            repeatcount="indefinite"
+                    ></animate>
+                </text>
 
-            <text x="220" y="34.5" transform="rotate(0.5,220,34.5)">
-              A
-              <animate
-                attributename="y"
-                values="34.5;35;34.5"
-                dur="2.8s"
-                repeatcount="indefinite"
-              ></animate>
-            </text>
+                <text x="220" y="34.5" transform="rotate(0.5,220,34.5)">
+                    A
+                    <animate
+                            attributename="y"
+                            values="34.5;35;34.5"
+                            dur="2.8s"
+                            repeatcount="indefinite"
+                    ></animate>
+                </text>
 
-            <text x="260" y="35" transform="rotate(-1,260,35)">
-              N
-              <animate
-                attributename="y"
-                values="35;35.5;35"
-                dur="2.5s"
-                repeatcount="indefinite"
-              ></animate>
-            </text>
-          </g>
+                <text x="260" y="35" transform="rotate(-1,260,35)">
+                    N
+                    <animate
+                            attributename="y"
+                            values="35;35.5;35"
+                            dur="2.5s"
+                            repeatcount="indefinite"
+                    ></animate>
+                </text>
+            </g>
 
-          <ellipse
-            cx="140"
-            cy="45"
-            rx="120"
-            ry="1"
-            fill="#2C3E50"
-            opacity="0.1"
-          ></ellipse>
+            <ellipse
+                    cx="140"
+                    cy="45"
+                    rx="120"
+                    ry="1"
+                    fill="#2C3E50"
+                    opacity="0.1"
+            ></ellipse>
         </svg>
-      </div>
-      <!-- <form id="difficulty-form" action="/set-difficulty" method="POST" class="difficulty-buttons"> -->
-      <form id="new-game-form" action="/game" method="POST">
+    </div>
+    <!-- <form id="difficulty-form" action="/set-difficulty" method="POST" class="difficulty-buttons"> -->
+    <form id="new-game-form" action="/game" method="POST">
         <div class="difficulty-buttons">
-          <input type="radio" id="easydif" name="difficulty" value="EASY" />
-            <label for="easydif">Easy</label>
-           
-          <input type="radio" id="mediumdif" name="difficulty" value="MEDIUM" />
-            <label for="mediumdif">Medium</label>
-           
-          <input type="radio" id="harddif" name="difficulty" value="HARD" />
-            <label for="harddif">Hard</label>
+            <input type="radio" id="easydif" name="difficulty" value="EASY"/>
+              <label for="easydif">Easy</label>
+             
+            <input type="radio" id="mediumdif" name="difficulty" value="MEDIUM"/>
+              <label for="mediumdif">Medium</label>
+             
+            <input type="radio" id="harddif" name="difficulty" value="HARD"/>
+              <label for="harddif">Hard</label>
         </div>
         <button type="submit" class="play-button">PLAY</button>
-      </form>
-    </div>
+        {{if eq .GameOver false}}
+        <button type="submit" formaction="/continue" class="play-button">CONTINUE</button>
+        {{end}}
+    </form>
+</div>
 
-  
-  
 
-    <div class="footer">
-      <svg class="footer-icon" viewBox="0 0 24 24">
+<div class="footer">
+    <svg class="footer-icon" viewBox="0 0 24 24">
         <path
-          d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
-          fill="black"
+                d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
+                fill="black"
         />
-      </svg>
-      <svg class="footer-icon" viewBox="0 0 24 24">
+    </svg>
+    <svg class="footer-icon" viewBox="0 0 24 24">
         <path
-          d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"
-          fill="black"
+                d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"
+                fill="black"
         />
-      </svg>
-    </div>
-  </body>
+    </svg>
+</div>
+</body>
 </html>
 {{end}}
