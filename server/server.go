@@ -13,6 +13,11 @@ import (
 
 var templates *template.Template
 
+type ScoresData struct {
+	HighScores []state.Score
+	History    []state.Score
+}
+
 func init() {
 	var err error
 	if templates, err = template.ParseGlob(config.App.Server.StaticWeb.Template.Dir); err != nil {

@@ -67,11 +67,11 @@
     <div class="modal-content">
         <form action="/game" method="post">
             <input type="hidden" name="difficulty" value="{{ .FilteredGameState.Difficulty }}">
-            <button id="replayButton" type="submit" class="button">Rejouer</button>
+            <button id="replayButton" type="submit" class="button">{{if .FilteredGameState.Victory }} CONTINUER {{else}}REJOUER{{end}}</button>
         </form>
         <div>
             <h1>{{if .FilteredGameState.Victory}}
-                Gagné !
+                SOLVED !
                 {{else}}
                 GAME OVER.
                 YOU SAVED {{ .FilteredGameState.Score }} Pts

@@ -1,82 +1,100 @@
-🎮 Jeu du Pendu (Hangman Game)
-Un jeu du pendu en ligne de commande développé en Go, avec plusieurs niveaux de difficulté et une interface utilisateur interactive.
+# Hangman Web 🎮
 
-📋 Table des matières
-Fonctionnalités
-Prérequis
-Installation
-Utilisation
-Structure du projet
-Règles du jeu
-Contribution
-✨ Fonctionnalités
-🎯 Trois niveaux de difficulté (Facile, Moyen, Difficile)
-🎨 Interface colorée et animations en ASCII art
-💖 Système de vies avec affichage visuel
-🔤 Option de révélation initiale de lettres
-⌨️ Navigation intuitive dans les menus
-🛠️ Prérequis
-Go 1.16 ou supérieur
-Les dépendances suivantes :
-github.com/fatih/color
-github.com/eiannone/keyboard
-📥 Installation
-Clonez le répertoire :
+Un jeu du pendu interactif avec une interface web, développé en Go.
 
-git clone https://github.com/votre-username/jeu-de-pendu.git
-cd jeu-de-pendu
-Installez les dépendances :
+## 📝 Description
 
-go mod download
-🎮 Utilisation
-Il existe deux façons de lancer le jeu :
+Hangman Web est une version web du célèbre jeu du pendu, implémentée en utilisant Go pour le backend et une interface utilisateur HTML/CSS pure pour le frontend. Le projet utilise un serveur HTTP natif et des templates Go pour créer une expérience de jeu interactive et engageante.
 
-Mode menu interactif :
+## ✨ Fonctionnalités
 
+### Page d'Accueil
+- Saisie du pseudo joueur
+- Sélection du niveau de difficulté
+- Redirection automatique vers la page de jeu si une partie est en cours
+
+### Page de Jeu
+- Affichage du mot masqué
+- Liste des lettres déjà essayées
+- Visualisation du pendu évolutive
+- Compteur de vies restantes
+- Messages de feedback sur les tentatives
+- Validation des entrées (lettres uniquement)
+
+### Page de Fin de Partie
+- Messages aléatoires de victoire/défaite
+- Option pour rejouer
+- Redirection automatique vers le jeu si une partie est en cours
+
+### Tableau des Scores
+- Historique persistant des parties
+- Stockage dans un fichier texte
+- Classement des meilleurs scores
+
+## 🛠️ Technologies Utilisées
+
+- **Go** - Backend et logique de jeu
+- **HTML/CSS** - Interface utilisateur
+- **Templates Go** - Rendu dynamique des pages
+- **Package `os`** - Gestion des fichiers pour les scores
+
+## 🚀 Installation
+
+1. Clonez le repository
+```bash
+git clone [URL_DU_REPO]
+cd hangman-web
+```
+
+2. Lancez le serveur
+```bash
 go run main.go
-Mode direct avec fichier de mots et lettres révélées :
+```
 
-go run main.go [fichier-mots] [nombre-lettres]
-Exemples :
+3. Accédez au jeu via votre navigateur
+```
+http://localhost:8080
+```
 
-go run main.go easy-words.txt 2    # Mode facile avec 2 lettres révélées
-go run main.go medium-words.txt 1   # Mode moyen avec 1 lettre révélée
-go run main.go hard-words.txt 0     # Mode difficile sans lettre révélée
-📁 Structure du projet
-jeu-de-pendu/
-├── main.go            # Point d'entrée du programme
-├── game/
-│   ├── hangman.go     # Logique principale du jeu
-│   ├── menu.go        # Gestion du menu
-│   ├── affichage.go   # Fonctions d'affichage et couleurs
-│   ├── wordsutil.go   # Utilitaires de gestion des mots
-│   ├── asciiart.go    # Art ASCII pour le pendu
-│   └── clearconsole.go # Utilitaire console
-├── data/
-│   ├── easy-words.txt  # Liste de mots faciles
-│   ├── medium-words.txt # Liste de mots moyens
-│   └── hard-words.txt  # Liste de mots difficiles
-└── README.md
-📌 Règles du jeu
-Un mot est choisi aléatoirement selon le niveau de difficulté
-Le joueur commence avec 10 vies (❤️)
-À chaque tour, le joueur peut :
-Proposer une lettre
-Deviner le mot complet
-Le joueur perd une vie (💔) pour chaque :
-Lettre incorrecte
-Mot incorrect (2 vies)
-La partie est gagnée si le mot est trouvé avant de perdre toutes les vies
-🎯 Niveaux de difficulté
-Facile : Mots courts (4-5 lettres)
-Moyen : Mots de longueur moyenne
-Difficile : Mots longs et complexes
-🤝 Contribution
-Les contributions sont les bienvenues ! Pour contribuer :
+## 📂 Structure du Projet
 
-Forkez le projet
-Créez une branche pour votre fonctionnalité
-Committez vos changements
-Poussez vers la branche
-Ouvrez une Pull Request
-Développé avec ❤️ et Go
+```
+hangman-web/
+│
+├── main.go                 # Point d'entrée de l'application
+├── game/                   # Logic du jeu
+├── templates/             # Templates HTML
+│   ├── home.html
+│   ├── game.html
+│   ├── end.html
+│   └── scores.html
+├── static/               # Fichiers statiques
+│   ├── css/
+│   └── images/
+└── data/                # Stockage des scores
+```
+
+## 🎮 Comment Jouer
+
+1. Accédez à la page d'accueil
+2. Entrez votre pseudo et choisissez la difficulté
+3. Devinez le mot en proposant des lettres ou des mots complets
+4. Surveillez vos points de vie restants
+5. Consultez le tableau des scores pour voir votre classement
+
+## ⚙️ Configuration Requise
+
+- Go 1.16 ou supérieur
+- Navigateur web moderne
+
+## 👥 Contributeurs
+
+- [Nom des contributeurs]
+
+## 📝 Licence
+
+Ce projet est sous licence [Type de licence]
+
+## 🤝 Contribution
+
+Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou proposer une pull request.
