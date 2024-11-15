@@ -114,6 +114,7 @@ func (g *GameState) isEndGame() bool {
 	if g.Lives <= 0 {
 		g.GameOver = true
 		g.Victory = false
+		g.Score = 0
 		return true
 	}
 
