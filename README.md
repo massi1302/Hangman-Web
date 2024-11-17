@@ -65,28 +65,36 @@ http://localhost:8080
 ```
 HANGMAN-WEB/
 │
-├── main.go                 # Point d'entrée de l'application
-├── game/                   # Logic du jeu
-├── templates/             # Templates HTML
-│   ├── home.html
-│   ├── game.html
-│   ├── end.html
-│   └── scores.html
-├── static/               # Fichiers statiques
-│   ├── css/
+├── config
+|   └── config.go         # Point d'entrée de l'application
+├── data/
+|   └──                # Logic du jeu
+├── game/             # Templates HTML
+│   ├── state
+│   │   ├── gamestate.go
+│   │   ├── save.go
+│   │   └── score.go
+│   ├── hangman.go
+│   └── wordsutil.go   
+├── resources/               # Fichiers statiques
+│   ├── assets/
+│   ├── data/
 │   └── images/
+├── server/
+│   └──server.go 
 └── data/                # Stockage des scores
 ```
 
 ## 📄 Documentation des Routes  
 Routes de Vues (Frontend)
 - GET / : Page d'accueil pour démarrer une nouvelle partie.
+- GET /index : Page d'accueil pour démarrer une nouvelle partie.
 - GET /game : Page de jeu pour jouer au pendu.
-- GET /end : Page de fin de partie affichant le résultat.
 - GET /scores : Page affichant le tableau des scores.
+- GET /home : Page afichant les choix des difficultés disponible.
 Routes API (Backend)
-- POST /start : Démarrer une nouvelle partie avec le pseudo et le niveau de difficulté.
-- POST /guess : Envoyer une lettre ou un mot pour deviner.
+- POST /login : Démarrer une nouvelle partie avec le pseudo.
+- POST /guess : Envoyer une lettre  pour deviner.
 - GET /leaderboard : Récupérer les scores.
 
 ## 🎮 Comment Jouer

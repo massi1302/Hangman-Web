@@ -1,3 +1,4 @@
+// Description: This file contains the configuration of the application.
 package config
 
 import (

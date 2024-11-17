@@ -1,4 +1,4 @@
-package hangman
+package game
 
 import (
 	"hangman/game/state"
@@ -7,10 +7,28 @@ import (
 	"unicode/utf8"
 )
 
+// /assets/images/hangman-9.png
+var hangmanDraw = make(map[int]string)
+
 var gameStatePerUser = make(map[string]*state.GameState)
 
+const lives = 10
+
+func init() {
+	hangmanDraw[1] = "/assets/images/hangman-0.png"
+	hangmanDraw[2] = "/assets/images/hangman-1.png"
+	hangmanDraw[3] = "/assets/images/hangman-2.png"
+	hangmanDraw[4] = "/assets/images/hangman-3.png"
+	hangmanDraw[5] = "/assets/images/hangman-4.png"
+	hangmanDraw[6] = "/assets/images/hangman-5.png"
+	hangmanDraw[7] = "/assets/images/hangman-6.png"
+	hangmanDraw[8] = "/assets/images/hangman-7.png"
+	hangmanDraw[9] = "/assets/images/hangman-8.png"
+	hangmanDraw[10] = "/assets/images/hangman-9.png"
+}
+
 // NewGame initialise une nouvelle partie
-func NewGame(username string, difficulty string) (*state.GameState, error) {
+func NewGame(user string, difficulty string) (*state.GameState, error) {
 	// Choisir le fichier de mots selon la difficulté
 	var path string
 	switch difficulty {
@@ -55,20 +73,13 @@ func NewGame(username string, difficulty string) (*state.GameState, error) {
 		displayedWord[randIndex] = string([]rune(*word)[randIndex])
 	}
 
-	if gameState, _ := state.LoadGameState(username); gameState != nil {
-		gameStatePerUser[username] = gameState
+	gameState := gameStatePerUser[user]
+
+	if gameState != nil {
 		gameState.Difficulty = difficulty
 		gameState.Word = *word
 		gameState.DisplayedWord = displayedWord
-		gameState.Lives = state.Lives
-		gameState.UsedLetters = make([]string, 0)
-		gameState.GameOver = false
-	} else if gameState = gameStatePerUser[username]; gameState != nil {
-		state.SaveGameState(username, gameState)
-		gameState.Difficulty = difficulty
-		gameState.Word = *word
-		gameState.DisplayedWord = displayedWord
-		gameState.Lives = state.Lives
+		gameState.Lives = lives
 		gameState.UsedLetters = make([]string, 0)
 		gameState.GameOver = false
 	} else {
@@ -76,16 +87,16 @@ func NewGame(username string, difficulty string) (*state.GameState, error) {
 			Difficulty:    difficulty,
 			Word:          *word,
 			DisplayedWord: displayedWord,
-			Lives:         state.Lives,
+			Lives:         lives,
 			UsedLetters:   make([]string, 0),
 			GameOver:      false,
 			Victory:       false,
 			Score:         0,
 		}
-		gameStatePerUser[username] = gameState
+		gameStatePerUser[user] = gameState
 	}
 
-	return gameStatePerUser[username], nil
+	return gameState, nil
 }
 
 func Continue(username string) *state.GameState {
@@ -97,6 +108,6 @@ func Continue(username string) *state.GameState {
 	return gameStatePerUser[username]
 }
 
-func GetGameState(username string) *state.GameState {
-	return gameStatePerUser[username]
+func GetGameState(user string) *state.GameState {
+	return gameStatePerUser[user]
 }

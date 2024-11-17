@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"hangman/config"
 	"hangman/data"
-	hangman "hangman/game"
+	"hangman/game"
 	"hangman/game/state"
 	"html/template"
 	"log"
@@ -12,11 +12,6 @@ import (
 )
 
 var templates *template.Template
-
-type ScoresData struct {
-	HighScores []state.Score
-	History    []state.Score
-}
 
 func init() {
 	var err error
@@ -50,9 +45,9 @@ func homeHandler(responseWriter http.ResponseWriter, request *http.Request) {
 	}
 }
 
-func scoresHandler(w http.ResponseWriter, r *http.Request) {
-	if err := templates.ExecuteTemplate(w, "scores", nil); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+func scoresHandler(responseWriter http.ResponseWriter, request *http.Request) {
+	if err := templates.ExecuteTemplate(responseWriter, "scores", nil); err != nil {
+		http.Error(responseWriter, err.Error(), http.StatusInternalServerError)
 	}
 }
 
@@ -68,7 +63,7 @@ func gameHandler(responseWriter http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	gameState, err := hangman.NewGame(userCookie.Value, difficulty)
+	gameState, err := game.NewGame(userCookie.Value, difficulty)
 	state.SaveGameState(userCookie.Value, gameState)
 	if err != nil {
 		http.Error(responseWriter, err.Error(), http.StatusInternalServerError)
@@ -90,7 +85,7 @@ func guessHandler(responseWriter http.ResponseWriter, request *http.Request) {
 	}
 
 	letter := request.URL.Query().Get("letter")
-	newGameState := hangman.GetGameState(userCookie.Value).GuessLetter(letter)
+	newGameState := game.GetGameState(userCookie.Value).GuessLetter(letter)
 	state.SaveGameState(userCookie.Value, newGameState)
 	if !newGameState.GameOver {
 		if err := templates.ExecuteTemplate(responseWriter, "game", data.NewGameData(newGameState)); err != nil {
@@ -126,7 +121,7 @@ func continueHandler(responseWriter http.ResponseWriter, request *http.Request) 
 		http.Error(responseWriter, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	gameState := hangman.Continue(userCookie.Value)
+	gameState := game.Continue(userCookie.Value)
 	if err := templates.ExecuteTemplate(responseWriter, "game", data.NewGameData(gameState)); err != nil {
 		http.Error(responseWriter, err.Error(), http.StatusInternalServerError)
 	}
