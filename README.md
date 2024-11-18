@@ -116,7 +116,7 @@ Routes API (Backend)
 - [Antony FONTAINE]   Frontend
 
 ## 📊 Synthèse du Projet
-Le rapport détaillant le déroulement du projet, la répartition des tâches, et la gestion du temps est disponible dans le fichier rapport.pdf.
+Le rapport détaillant le déroulement du projet, la répartition des tâches, et la gestion du temps est disponible dans le fichier [text](<../Rapport de Synthèse du Projet.pdf>).
 
 ## 📚 Ressources Utilisées
 Documentation officielle Go : https://golang.org/doc/
