@@ -1,101 +1,109 @@
+/* Polices */
 @font-face {
     font-family: 'Belinsky';
     src: url('../fonts/belinsky-text/Belinsky\ Text\ Bold.otf');
     src: url('../fonts/belinsky-text/Belinsky\ Text\ Regular.otf');
- }
- 
- * {
-     margin: 0;
-     padding: 0;
-     box-sizing: border-box;
- }
- 
- body {
-     margin: 0;
-     padding: 15px;
-     min-height: 100vh;
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     background: white;
-     font-family: Arial, sans-serif;
-     justify-content: space-between;
- }
- 
+}
+
+/* Reset et styles de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 15px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    font-family: Arial, sans-serif;
+    position: relative;
+}
+
+/* Logo */
 .logo-container {
-    width: 600px;  
-    height: 200px; 
+    width: 600px;
+    height: 200px;
     display: flex;
     justify-content: center;
     align-items: center;
- }
+    margin-bottom: 2rem;
+}
 
-.logo-container svg{
+.logo-container svg {
     width: 100%;
     height: 100%;
-    transform: scale(1.1);  
-    transition: transform 0.3s ease; 
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
 }
 
-logo-container:hover svg {
-    transform: scale(1.25); 
+.logo-container:hover svg {
+    transform: scale(1.25);
 }
 
- 
- .difficulty-buttons {
-     display: flex;
-     flex-direction: column;
-     justify-content: center;
-     gap: 15px;
-     margin:15px 0;
- }
- 
- .button {
-     padding: 10px 30px;
-     font-size: 20px;
-     border: 2px solid black;
-     background: white;
-     cursor: pointer;
-     text-transform: uppercase;
-     min-width: 120px;
-     text-align: center;
-     transition: all 0.3s ease;
- }
+/* Boutons */
+.difficulty-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 15px 0;
+}
 
-    .button:hover {
-        background: black;
-        color: white;
-    }
- 
- 
- 
- 
-.main-content{
+.button {
+    padding: 10px 30px;
+    font-size: 20px;
+    border: 2px solid black;
+    background: white;
+    cursor: pointer;
+    text-transform: uppercase;
+    min-width: 200px;
+    text-align: center;
+    transition: all 0.3s ease;
+    color: black;
+}
+
+.button:hover {
+    background: black;
+    color: white;
+}
+
+/* Structure principale */
+.main-content {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    margin: 5px 0;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
- .footer {
-    position: static;
-    width: 100%;
-    display: flex;
-    gap: 20px;
-    justify-content: flex-start;
-    padding: 10px 0;
- }
- 
- .footer-icon {
-     width: 25px;
-     height: 25px;
-     cursor: pointer;
- }
- 
- .modal {
+/* Footer et icône règles */
+.footer {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 100;
+}
+
+.footer-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.footer-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Styles des modals */
+.modal {
     display: none;
     position: fixed;
     top: 0;
@@ -110,11 +118,11 @@ logo-container:hover svg {
 
 .modal-content {
     background-color: white;
-    padding: 30px;
+    padding: 2rem;
     border-radius: 8px;
     position: relative;
     width: 90%;
-    max-width: 400px;
+    max-width: 500px;
     animation: modalSlide 0.3s ease;
 }
 
@@ -125,24 +133,19 @@ logo-container:hover svg {
     font-size: 24px;
     cursor: pointer;
     color: #2C3E50;
+    transition: color 0.3s ease;
 }
 
 .close-btn:hover {
     color: black;
 }
 
+/* Styles du formulaire de pseudo */
 .username-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    align-items: center;
-}
-
-.username-form h2 {
-    color: #2C3E50;
-    font-family: 'Belinsky', Arial, sans-serif;
-    text-align: center;
-    margin-bottom: 10px;
+    margin-top: 1rem;
 }
 
 .username-input {
@@ -158,16 +161,30 @@ logo-container:hover svg {
     border-color: black;
 }
 
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-3px);
-    }
+/* Styles des règles */
+.rules-text {
+    margin-top: 1.5rem;
+    line-height: 1.6;
 }
 
+.rules-text ol {
+    padding-left: 1.5rem;
+}
+
+.rules-text li {
+    margin-bottom: 1rem;
+}
+
+.rules-text ul {
+    margin-top: 0.5rem;
+    margin-left: 1.5rem;
+}
+
+.rules-text ul li {
+    margin-bottom: 0.5rem;
+}
+
+/* Animations */
 @keyframes modalSlide {
     from {
         transform: translateY(-20px);
@@ -176,5 +193,23 @@ logo-container:hover svg {
     to {
         transform: translateY(0);
         opacity: 1;
+    }
+}
+
+/* Media Queries pour la responsivité */
+@media (max-width: 768px) {
+    .logo-container {
+        width: 100%;
+        height: 150px;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    .button {
+        min-width: 150px;
+        font-size: 16px;
     }
 }
