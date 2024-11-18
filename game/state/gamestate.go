@@ -1,14 +1,9 @@
 package state
 
 import (
-	"encoding/json"
-	"fmt"
 	"html/template"
-	"os"
 	"slices"
-	"sort"
 	"strings"
-	"time"
 )
 
 // Lives représente le nombre de vies
@@ -31,11 +26,6 @@ func init() {
 	hangmanDraw[10] = "/assets/images/hangman-9.png"
 }
 
-type HighScores struct {
-	HighScores []Score `json:"highScores"`
-	History    []Score `json:"history"`
-}
-
 // GameState représente l'état actuel d'une partie
 type GameState struct {
 	Difficulty    string   `json:"difficulty"`
@@ -46,6 +36,7 @@ type GameState struct {
 	GameOver      bool     `json:"gameOver"`
 	Victory       bool     `json:"victory"`
 	Score         int      `json:"score"`
+	BestScore     int      `json:"bestScore"`
 }
 
 // FilteredGameState représente l'état actuel d'une partie filtrée
@@ -57,6 +48,7 @@ type FilteredGameState struct {
 	GameOver      bool
 	Victory       bool
 	Score         int
+	BestScore     int
 }
 
 // ToFilteredGameState convertit un GameState en FilteredGameState
@@ -69,6 +61,7 @@ func (g *GameState) ToFilteredGameState() *FilteredGameState {
 		GameOver:      g.GameOver,
 		Victory:       g.Victory,
 		Score:         g.Score,
+		BestScore:     g.BestScore,
 	}
 }
 
@@ -132,11 +125,19 @@ func (g *GameState) isEndGame() bool {
 	if g.Lives <= 0 {
 		g.GameOver = true
 		g.Victory = false
-		g.Score = 0
 		return true
 	}
 
 	return false
+}
+
+func (g *GameState) ResetScore() {
+	if g.Lives <= 0 {
+		if g.BestScore < g.Score {
+			g.BestScore = g.Score
+		}
+		g.Score = 0
+	}
 }
 
 // IsUsedLetter vérifie si la lettre a déjà été utilisée
@@ -164,67 +165,4 @@ func (f *FilteredGameState) DrawHangman(remainingLives int) string {
 		return hangmanDraw[Lives]
 	}
 	return hangmanDraw[Lives-remainingLives+1]
-}
-
-func (h *HighScores) GetHighScores() []Score {
-	return h.HighScores
-}
-
-func (h *HighScores) GetHistory() []Score {
-	return h.History
-}
-
-func (h *HighScores) AddScore(username string, points int, victory bool) {
-	newScore := Score{
-		Username: username,
-		Points:   points,
-		Victory:  victory,
-		Date:     time.Now(),
-	}
-
-	// Ajouter à l'historique
-	h.History = append(h.History, newScore)
-	if len(h.History) > maxHistoryScores {
-		h.History = h.History[len(h.History)-maxHistoryScores:]
-	}
-
-	// Vérifier si le score mérite d'être dans les high scores
-	h.HighScores = append(h.HighScores, newScore)
-
-	// Trier les high scores par points décroissants
-	sort.Slice(h.HighScores, func(i, j int) bool {
-		return h.HighScores[i].Points > h.HighScores[j].Points
-	})
-}
-
-func (h *HighScores) LoadScores() error {
-	data, err := os.ReadFile(scoresFile)
-	if err != nil {
-		if os.IsNotExist(err) {
-			// Si le fichier n'existe pas, on crée un nouveau score manager
-			return h.SaveScores()
-		}
-		return fmt.Errorf("error reading scores file: %v", err)
-	}
-
-	err = json.Unmarshal(data, h)
-	if err != nil {
-		return fmt.Errorf("error unmarshaling scores: %v", err)
-	}
-
-	return nil
-}
-
-func (h *HighScores) SaveScores() error {
-	data, err := json.MarshalIndent(h, "", "  ")
-	if err != nil {
-		return fmt.Errorf("error marshaling scores: %v", err)
-	}
-
-	err = os.WriteFile(scoresFile, data, 0644)
-	if err != nil {
-		return fmt.Errorf("error writing scores file: %v", err)
-	}
-
-	return nil
 }

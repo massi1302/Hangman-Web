@@ -15,7 +15,7 @@
     </a>
     <div class="score">
         <span>SAVED: {{ .FilteredGameState.Score }} Pts</span>
-        <span>BEST: TODO</span>
+        <span>BEST: {{ .FilteredGameState.BestScore }} Pts</span>
     </div>
 </div>
 
@@ -67,7 +67,9 @@
     <div class="modal-content">
         <form action="/game" method="post">
             <input type="hidden" name="difficulty" value="{{ .FilteredGameState.Difficulty }}">
-            <button id="replayButton" type="submit" class="button">{{if .FilteredGameState.Victory }} CONTINUER {{else}}REJOUER{{end}}</button>
+            <button id="replayButton" type="submit" class="button">{{if .FilteredGameState.Victory }} CONTINUER
+                {{else}}REJOUER{{end}}
+            </button>
         </form>
         <div>
             <h1>{{if .FilteredGameState.Victory}}

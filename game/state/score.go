@@ -22,8 +22,8 @@ type ScoreManager struct {
 }
 
 const (
-	maxHighScores    = 10
-	maxHistoryScores = 50
+	maxHighScores    = 3
+	maxHistoryScores = 5
 )
 
 var (
@@ -84,7 +84,9 @@ func (sm *ScoreManager) AddScore(username string, points int, victory bool) erro
 	}
 
 	// Vérifier si le score mérite d'être dans les high scores
-	sm.HighScores = append(sm.HighScores, newScore)
+	if points > 0 {
+		sm.HighScores = append(sm.HighScores, newScore)
+	}
 
 	// Trier les high scores par points décroissants
 	sort.Slice(sm.HighScores, func(i, j int) bool {

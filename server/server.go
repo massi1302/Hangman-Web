@@ -7,17 +7,17 @@ import (
 	"hangman/game"
 	"hangman/game/state"
 	"html/template"
-	"log"
 	"net/http"
 )
 
 var templates *template.Template
 
+func addOne(i int) int {
+	return i + 1
+}
+
 func init() {
-	var err error
-	if templates, err = template.ParseGlob(config.App.Server.StaticWeb.Template.Dir); err != nil {
-		log.Fatalf("Erreur lors du chargement des templates: %v\n", err)
-	}
+	templates = template.Must(template.New("hangman").Funcs(template.FuncMap{"addOne": addOne}).ParseGlob(config.App.Server.StaticWeb.Template.Dir))
 }
 
 func indexHandler(responseWriter http.ResponseWriter, request *http.Request) {
@@ -46,7 +46,7 @@ func homeHandler(responseWriter http.ResponseWriter, request *http.Request) {
 }
 
 func scoresHandler(responseWriter http.ResponseWriter, request *http.Request) {
-	if err := templates.ExecuteTemplate(responseWriter, "scores", nil); err != nil {
+	if err := templates.ExecuteTemplate(responseWriter, "scores", game.GetScoresManager()); err != nil {
 		http.Error(responseWriter, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -86,15 +86,19 @@ func guessHandler(responseWriter http.ResponseWriter, request *http.Request) {
 
 	letter := request.URL.Query().Get("letter")
 	newGameState := game.GetGameState(userCookie.Value).GuessLetter(letter)
-	state.SaveGameState(userCookie.Value, newGameState)
+	defer state.SaveGameState(userCookie.Value, newGameState)
 	if !newGameState.GameOver {
 		if err := templates.ExecuteTemplate(responseWriter, "game", data.NewGameData(newGameState)); err != nil {
 			http.Error(responseWriter, err.Error(), http.StatusInternalServerError)
 		}
 	} else {
+		if !newGameState.Victory {
+			game.AddScore(userCookie.Value, newGameState.Score, newGameState.Victory)
+		}
 		if err := templates.ExecuteTemplate(responseWriter, "game", data.NewGameOverData(newGameState)); err != nil {
 			http.Error(responseWriter, err.Error(), http.StatusInternalServerError)
 		}
+		newGameState.ResetScore()
 	}
 }
 

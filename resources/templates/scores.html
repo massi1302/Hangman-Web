@@ -8,49 +8,73 @@
     <link rel="stylesheet" href="/assets/css/scores.css">
 </head>
 <body>
-<header>
-    <h1>Tableau des Scores</h1>
-</header>
-
-<div class="container">
-    <div class="scores-table">
-        <div class="tab-buttons">
-            <button class="tab-button active" onclick="showTab('highscores')">Meilleurs Scores</button>
-            <button class="tab-button" onclick="showTab('history')">Historique</button>
+    <div class="scores-page">
+        <div>
+            <h1 class="page-title">Tableau des Scores</h1>
         </div>
-        <div id="highscores" class="tab-content">
-            <table>
-                <thead>
-                <tr>
-                    <th class="rank">Rang</th>
-                    <th>Joueur</th>
-                    <th class="score">Score</th>
-                    <th class="date">Date</th>
-                </tr>
-                </thead>
-                <tbody id="highscoresTable"></tbody>
-            </table>
+    
+        <div class="container">
+            <div class="scores-table">
+                <div class="tab-buttons">
+                    Meilleurs Scores
+                </div>
+    
+                <div id="highscores" class="tab-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rang</th>
+                                <th>Joueur</th>
+                                <th>Score</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range $index, $score := .HighScores}}
+                            <tr>
+                                <td>{{$index | addOne}}</td>
+                                <td>{{$score.Username}}</td>
+                                <td>{{$score.Points}}</td>
+                                <td>{{$score.FormattedDate}}</td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    
+            <div class="scores-table">
+                <div class="tab-buttons">
+                    Historique
+                </div>
+    
+                <div id="history" class="tab-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Joueur</th>
+                                <th>Score</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range $score := .History}}
+                            <tr>
+                                <td>{{$score.Username}}</td>
+                                <td>{{$score.Points}}</td>
+                                <td>{{$score.FormattedDate}}</td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div id="history" class="tab-content" style="display: none;">
-            <table>
-                <thead>
-                <tr>
-                    <th>Joueur</th>
-                    <th class="score">Score</th>
-                    <th>Résultat</th>
-                    <th class="date">Date</th>
-                </tr>
-                </thead>
-                <tbody id="historyTable"></tbody>
-            </table>
+    
+        <div class="nav-buttons">
+            <a href="/" class="home-button">Retour à l'accueil</a>
         </div>
     </div>
-    <div class="nav-buttons">
-        <button class="nav-button" onclick="goHome()">Retour à l'accueil</button>
-        <button class="nav-button" onclick="playAgain()">Nouvelle partie</button>
-    </div>
-</div>
-
 
 </body>
 </html>

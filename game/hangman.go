@@ -8,9 +8,11 @@ import (
 )
 
 // /assets/images/hangman-9.png
-var hangmanDraw = make(map[int]string)
-
-var gameStatePerUser = make(map[string]*state.GameState)
+var (
+	hangmanDraw      = make(map[int]string)
+	gameStatePerUser = make(map[string]*state.GameState)
+	scoresManager    *state.ScoreManager
+)
 
 const lives = 10
 
@@ -25,6 +27,13 @@ func init() {
 	hangmanDraw[8] = "/assets/images/hangman-7.png"
 	hangmanDraw[9] = "/assets/images/hangman-8.png"
 	hangmanDraw[10] = "/assets/images/hangman-9.png"
+
+	scoresManager = state.NewScoreManager()
+	err := scoresManager.LoadScores()
+	if err != nil {
+		// TODO Que faire dans le cas d'une erreur ?
+		return
+	}
 }
 
 // NewGame initialise une nouvelle partie
@@ -92,6 +101,7 @@ func NewGame(user string, difficulty string) (*state.GameState, error) {
 			GameOver:      false,
 			Victory:       false,
 			Score:         0,
+			BestScore:     0,
 		}
 		gameStatePerUser[user] = gameState
 	}
@@ -110,4 +120,16 @@ func Continue(username string) *state.GameState {
 
 func GetGameState(user string) *state.GameState {
 	return gameStatePerUser[user]
+}
+
+func GetScoresManager() state.ScoreManager {
+	return *scoresManager
+}
+
+func AddScore(username string, points int, victory bool) {
+	err := scoresManager.AddScore(username, points, victory)
+	if err != nil {
+		// TODO - Que faire en cas d'erreur ?
+		return
+	}
 }
